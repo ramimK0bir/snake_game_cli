@@ -1,7 +1,7 @@
 """
 This is a simple snake game .
 auther : userAnonymousLoggedIn
-github : 
+github : https://github.com/ramimk0bir
 """
 import asyncio
 import time
@@ -139,3 +139,4 @@ if __name__ == "__main__":
         asyncio.run(main())
     except KeyboardInterrupt:
         print("Program stopped.")
+
