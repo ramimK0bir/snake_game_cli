@@ -37,12 +37,7 @@ def score_bar(score):
 
 """
 
-game_over = f"""
-----------------------
-|     Game Over      |
-|{ f"score :{score+1}".center(20) }|
-----------------------
-"""
+
 
 
 
@@ -104,8 +99,12 @@ async def print_loop():
         else :
             temp_base=base_replace(temp_base,   "\033[31m*\033[32m"      , food[0], food[1])
 
-
-
+        game_over = f"""
+        ----------------------
+        |     Game Over      |
+        |{ f"score :{score+1}".center(20) }|
+        ----------------------
+        """
         if any(  (x[1] >=11 or not x[1] ) for x in snake_body     ) :
             print("\033[H\033[J", end="")  # ANSI escape code to clear screen
             print("\033[91m" +game_over+"\033[0m\n")
@@ -140,6 +139,7 @@ if __name__ == "__main__":
         asyncio.run(main())
     except KeyboardInterrupt:
         print("Program stopped.")
+
 
 
 
