@@ -102,7 +102,7 @@ async def print_loop():
             food=( random.randint(1,20),random.randint(1,10)       )
             score+=1
         else :
-            temp_base=base_replace(temp_base,"*", food[0], food[1])
+            temp_base=base_replace(temp_base,   "\033[31m*\033[0m"      , food[0], food[1])
 
 
 
@@ -140,6 +140,7 @@ if __name__ == "__main__":
         asyncio.run(main())
     except KeyboardInterrupt:
         print("Program stopped.")
+
 
 
 
