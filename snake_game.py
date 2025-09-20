@@ -9,7 +9,7 @@ import random
 import keyboard
 pressedKey=-1
 operationalKey=-1
-snake_body=[(5,5),(4,5),(3,5),(2,5),(1,5)]
+snake_body=[(1,5)]
 food=-1
 score=-1
 
@@ -139,4 +139,5 @@ if __name__ == "__main__":
         asyncio.run(main())
     except KeyboardInterrupt:
         print("Program stopped.")
+
 
