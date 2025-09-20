@@ -11,7 +11,7 @@ pressedKey=-1
 operationalKey=-1
 snake_body=[(1,5)]
 food=-1
-score=-1
+score=-2
 
 
 base = """|++++++++++++++++++++|
@@ -139,6 +139,7 @@ if __name__ == "__main__":
         asyncio.run(main())
     except KeyboardInterrupt:
         print("Program stopped.")
+
 
 
 
