@@ -40,7 +40,7 @@ def score_bar(score):
 game_over = f"""
 ----------------------
 |  Game Over          |
-|{ f"score :{score}" }|
+|{ f"score :{score}".center(20) }|
 ----------------------
 """
 
@@ -140,6 +140,7 @@ if __name__ == "__main__":
         asyncio.run(main())
     except KeyboardInterrupt:
         print("Program stopped.")
+
 
 
 
