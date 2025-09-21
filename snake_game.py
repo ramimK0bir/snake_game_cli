@@ -1,7 +1,7 @@
 """
 This is a simple snake game .
-auther : userAnonymousLoggedIn
-github : https://github.com/ramimk0bir
+Author : userAnonymousLoggedIn
+GitHub : https://github.com/ramimk0bir
 """
 import asyncio
 import time
@@ -40,7 +40,7 @@ def score_bar(score):
 
 
 
-
+isGamePaused=0
 
 
 
@@ -61,27 +61,47 @@ def base_replace(base_text,text,x,y):
 
 
 async def print_loop():
-    global pressedKey,operationalKey,snake_body,food,score
+    global pressedKey,operationalKey,snake_body,food,score,isGamePaused
     while True:
 
         x=snake_body[0][0]
         y=snake_body[0][1]
-        if pressedKey==0 and (abs(operationalKey-pressedKey)!=2) :
+        print(abs(operationalKey-pressedKey), file=open("test.txt", "a"))
+        if isGamePaused  :
+            pass
+        elif (abs(operationalKey-pressedKey)==2)  :
+            X=x
+            Y=y
+
+            if pressedKey==0:
+                Y+=1
+            elif pressedKey==2:
+                Y-=1
+            elif pressedKey==1:
+                X+=1
+            elif pressedKey==3:
+                X-=1
+            snake_body.insert(0,(X,Y))
+            snake_body.pop()
+            
+        elif pressedKey==0  :
             snake_body.insert(0,(x,y-1))
             snake_body.pop()
             operationalKey=0
-        elif pressedKey==1 and (abs(operationalKey-pressedKey)!=2):
+
+        elif pressedKey==1:
             snake_body.insert(0,(x-1,y))
             snake_body.pop()
             operationalKey=1
-        elif pressedKey==2 and (abs(operationalKey-pressedKey)!=2):
+        elif pressedKey==2 :
             snake_body.insert(0,(x,y+1))
             snake_body.pop()
             operationalKey=2
-        elif pressedKey==3 and (abs(operationalKey-pressedKey)!=2):
+        elif pressedKey==3 :
             snake_body.insert(0,(x+1,y))
             snake_body.pop()
             operationalKey=3
+
         if food in snake_body:
             snake_body.insert(0,food  )
             food=-1
@@ -119,7 +139,7 @@ async def print_loop():
         await asyncio.sleep(0.5)  # prevent blocking CPU
 
 async def check_keys():
-    global pressedKey
+    global pressedKey,isGamePaused
     while True:
         if keyboard.is_pressed('up'):
             pressedKey=0
@@ -129,6 +149,8 @@ async def check_keys():
             pressedKey=2
         elif keyboard.is_pressed('right'):
             pressedKey=3
+        elif keyboard.is_pressed('space') :
+            isGamePaused = not isGamePaused
         await asyncio.sleep(.1)
 
 async def main():
