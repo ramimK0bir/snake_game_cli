@@ -4,9 +4,8 @@ Author : userAnonymousLoggedIn
 GitHub : https://github.com/ramimk0bir
 """
 import asyncio
-import time
 import random
-import keyboard
+import custom_keyboard
 pressedKey=-1
 operationalKey=-1
 snake_body=[(1,5)]
@@ -141,15 +140,15 @@ async def print_loop():
 async def check_keys():
     global pressedKey,isGamePaused
     while True:
-        if keyboard.is_pressed('up'):
+        if custom_keyboard.is_pressed('up'):
             pressedKey=0
-        elif keyboard.is_pressed('left'):
+        elif custom_keyboard.is_pressed('left'):
             pressedKey=1
-        elif keyboard.is_pressed('down'):
+        elif custom_keyboard.is_pressed('down'):
             pressedKey=2
-        elif keyboard.is_pressed('right'):
+        elif custom_keyboard.is_pressed('right'):
             pressedKey=3
-        elif keyboard.is_pressed('space') :
+        elif custom_keyboard.is_pressed('space') :
             isGamePaused = not isGamePaused
         await asyncio.sleep(.1)
 
