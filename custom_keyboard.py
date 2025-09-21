@@ -1,23 +1,25 @@
 from pynput import keyboard
 
-def wait_for_key_press():
-    pressed_key = None
+pressed_keys = set()
 
-    def on_press(key):
-        nonlocal pressed_key
-        pressed_key = key
-        # Stop listener after first key press
-        return False
+def on_press(key):
+    pressed_keys.add(key)
 
-    with keyboard.Listener(on_press=on_press) as listener:
-        listener.join()  # This blocks until listener stops
+def on_release(key):
+    if key in pressed_keys:
+        pressed_keys.remove(key)
 
-    return pressed_key
+listener = keyboard.Listener(on_press=on_press, on_release=on_release)
+listener.start()
 
-def is_pressed(key) :
-    key="Key."+key
-    pressed_key = wait_for_key_press()
-    print(f"pressed_key {str(pressed_key)}")
-    if key==pressed_key :
-        print("true")
-        return True
+def is_pressed(key_name):
+    # Convert string like "space" to pynput Key or character
+    from pynput.keyboard import Key
+    try:
+        key = getattr(Key, key_name)
+    except AttributeError:
+        # Not a special key, check char key
+        key = key_name
+
+    return key in pressed_keys
+
