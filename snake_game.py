@@ -5,7 +5,6 @@ GitHub : https://github.com/ramimk0bir
 """
 import asyncio
 import random
-import custom_keyboard
 pressedKey=-1
 operationalKey=-1
 snake_body=[(1,5)]
@@ -36,13 +35,35 @@ def score_bar(score):
 
 """
 
-
-
-
 isGamePaused=0
 
+class custom_keyboard :
+    def __init__(self):
+        from pynput import keyboard
+        
+        self.keyboard=keyboard
+        self.pressed_keys = set()
+
+        self.listener = self.keyboard.Listener(on_press=self.on_press, on_release=self.on_release)
+        self.listener.start()
+    def on_press(self,key):
+        self.pressed_keys.add(key)
+
+    def on_release(self,key):
+        if key in self.pressed_keys:
+            self.pressed_keys.remove(key)
 
 
+    def is_pressed(self,key_name):
+        # Convert string like "space" to pynput Key or character
+        from pynput.keyboard import Key
+        try:
+            key = getattr(Key, key_name)
+        except AttributeError:
+            # Not a special key, check char key
+            key = key_name
+
+        return key in self.pressed_keys
 
 def base_replace(base_text,text,x,y):
     x-=1
@@ -62,7 +83,8 @@ def base_replace(base_text,text,x,y):
 async def print_loop():
     global pressedKey,operationalKey,snake_body,food,score,isGamePaused
     while True:
-
+        
+        lastNode=snake_body[-1]
         x=snake_body[0][0]
         y=snake_body[0][1]
         print(abs(operationalKey-pressedKey), file=open("test.txt", "a"))
@@ -71,7 +93,6 @@ async def print_loop():
         elif (abs(operationalKey-pressedKey)==2)  :
             X=x
             Y=y
-
             if pressedKey==0:
                 Y+=1
             elif pressedKey==2:
@@ -82,12 +103,10 @@ async def print_loop():
                 X-=1
             snake_body.insert(0,(X,Y))
             snake_body.pop()
-            
         elif pressedKey==0  :
             snake_body.insert(0,(x,y-1))
             snake_body.pop()
             operationalKey=0
-
         elif pressedKey==1:
             snake_body.insert(0,(x-1,y))
             snake_body.pop()
@@ -101,9 +120,7 @@ async def print_loop():
             snake_body.pop()
             operationalKey=3
 
-        if food in snake_body:
-            snake_body.insert(0,food  )
-            food=-1
+
 
 
         temp_base=base_replace(base,"+",0,0)
@@ -124,21 +141,30 @@ async def print_loop():
 |{ f"score :{score+1}".center(20) }|
 ----------------------
 """
-        if any(  (x[1] >=11 or not x[1] ) for x in snake_body     ) :
+        if snake_body[0][1] >=11 or not snake_body[0][1] :
             print("\033[H\033[J", end="")  # ANSI escape code to clear screen
             print("\033[91m" +game_over+"\033[0m\n")
             break
-        elif any(  (x[0] >=21 or not x[0] ) for x in snake_body     ) :
+        elif snake_body[0][0] >=21 or not snake_body[0][0]  :
             print("\033[H\033[J", end="") 
             print("\033[91m" +game_over+"\033[0m\n")
             break
+        elif any( not snake_body.count(x)<=1  for x in snake_body  ) :
+            print("\033[H\033[J", end="") 
+            print("\033[91m" +game_over+"\033[0m\n")
+            break
+        if food in snake_body:
+  
+            snake_body.insert(-1,snake_body[-1])
+            food=-1
         main_base = score_bar(score)+ line+'\n'+temp_base+line
         print("\033[H\033[J", end="")  # ANSI escape code to clear screen
         print("\033[92m" +main_base+"\033[0m\n")
         await asyncio.sleep(0.5)  # prevent blocking CPU
 
 async def check_keys():
-    global pressedKey,isGamePaused
+    global pressedKey,isGamePaused,custom_keyboard
+    custom_keyboard=custom_keyboard()
     while True:
         if custom_keyboard.is_pressed('up'):
             pressedKey=0
@@ -160,16 +186,6 @@ if __name__ == "__main__":
         asyncio.run(main())
     except KeyboardInterrupt:
         print("Program stopped.")
-
-
-
-
-
-
-
-
-
-
 
 
 
