@@ -1,6 +1,6 @@
 """
 This is a simple snake game .
-Author : userAnonymousLoggedIn
+Author : userAnonymous
 GitHub : https://github.com/ramimk0bir
 """
 import asyncio
@@ -192,3 +192,4 @@ if __name__ == "__main__":
         asyncio.run(main())
     except KeyboardInterrupt:
         print("Program stopped.")
+
