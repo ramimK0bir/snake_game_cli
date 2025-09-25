@@ -8,6 +8,13 @@ A command-line implementation of the classic Snake game written in Python.
 - Simple, lightweight, and easy to run.
 - No external dependencies required except Python and modules listed in `requirements.txt`.
 
+## Technologies Used
+
+- **Python** (3.x recommended)
+- **asyncio** (for asynchronous game loop)
+- **random** (for food placement)
+- **pynput** (for keyboard input handling)
+
 ## Installation
 
 1. **Clone the repository:**
@@ -24,6 +31,11 @@ A command-line implementation of the classic Snake game written in Python.
 3. **Run the game:**
    ```bash
    python snake_game.py
+   ```
+
+   You can optionally set the snake's speed using the `--speed` argument (default is 2):
+   ```bash
+   python snake_game.py --speed 5
    ```
 
 ## Gameplay
