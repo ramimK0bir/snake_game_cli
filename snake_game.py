@@ -5,6 +5,7 @@ GitHub : https://github.com/ramimk0bir
 """
 import asyncio
 import random
+import os
 import argparse
 
 parser = argparse.ArgumentParser(description="Snake Game CLI")
@@ -43,7 +44,17 @@ isGamePaused=0
 
 class custom_keyboard :
     def __init__(self):
-        from pynput import keyboard
+
+        try :
+            from pynput import keyboard
+        # this is if module not found
+        except ModuleNotFoundError:
+            os.system("pip install pynput")
+            from pynput import keyboard
+        except Exception as e :
+            print("install pynput with pip install pynput")
+            raise e
+        self.Key=keyboard.Key
         
         self.keyboard=keyboard
         self.pressed_keys = set()
@@ -59,9 +70,8 @@ class custom_keyboard :
 
     def is_pressed(self,key_name):
         # Convert string like "space" to pynput Key or character
-        from pynput.keyboard import Key
         try:
-            key = getattr(Key, key_name)
+            key = getattr(self.Key, key_name)
         except AttributeError:
             # Not a special key, check char key
             key = key_name
