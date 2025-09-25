@@ -5,12 +5,18 @@ GitHub : https://github.com/ramimk0bir
 """
 import asyncio
 import random
+import argparse
+
+parser = argparse.ArgumentParser(description="Snake Game CLI")
+parser.add_argument('--speed', type=float, default=2, help='Speed of the snake (higher is faster)')
+args = parser.parse_args()
+SPEED = 1 / args.speed if args.speed > 0 else 0.5
+
 pressedKey=-1
 operationalKey=-1
 snake_body=[(1,5)]
 food=-1
 score=-2
-
 
 base = """|++++++++++++++++++++|
 |++++++++++++++++++++|
@@ -25,9 +31,7 @@ base = """|++++++++++++++++++++|
 """
 line="----------------------"
 
-
 def score_bar(score):
-
     return f"""
 ----------------------
 |{ f"score :{score+1}".center(20) }|
@@ -53,7 +57,6 @@ class custom_keyboard :
         if key in self.pressed_keys:
             self.pressed_keys.remove(key)
 
-
     def is_pressed(self,key_name):
         # Convert string like "space" to pynput Key or character
         from pynput.keyboard import Key
@@ -73,12 +76,9 @@ def base_replace(base_text,text,x,y):
     base2=[]
     for index,line in enumerate(base.split('\n')):
         if index == y:
-
             line= line [:x+1]+text+ line[x+2:]
         base2.append(line)
     return  '\n'.join(base2)
-
-
 
 async def print_loop():
     global pressedKey,operationalKey,snake_body,food,score,isGamePaused
@@ -120,9 +120,6 @@ async def print_loop():
             snake_body.pop()
             operationalKey=3
 
-
-
-
         temp_base=base_replace(base,"+",0,0)
         for index,item in enumerate (snake_body):
             if index == 0:
@@ -154,13 +151,12 @@ async def print_loop():
             print("\033[91m" +game_over+"\033[0m\n")
             break
         if food in snake_body:
-  
             snake_body.insert(-1,snake_body[-1])
             food=-1
         main_base = score_bar(score)+ line+'\n'+temp_base+line
         print("\033[H\033[J", end="")  # ANSI escape code to clear screen
         print("\033[92m" +main_base+"\033[0m\n")
-        await asyncio.sleep(0.5)  # prevent blocking CPU
+        await asyncio.sleep(SPEED)  # uses speed argument
 
 async def check_keys():
     global pressedKey,isGamePaused,custom_keyboard
@@ -186,6 +182,3 @@ if __name__ == "__main__":
         asyncio.run(main())
     except KeyboardInterrupt:
         print("Program stopped.")
-
-
-
