@@ -16,10 +16,10 @@ SPEED = 1 / args.speed if args.speed > 0 else 0.5
 pressedKey=-1
 operationalKey=-1
 snake_body=[(1,5)]
-for i in range(100) :
-    block=(random.randint(1, 20),random.randint(1,20))
-    if block not in snake_body :
-        snake_body.insert(0,block )
+# for i in range(100) :
+#     block=(random.randint(1, 20),random.randint(1,20))
+#     if block not in snake_body :
+#         snake_body.insert(0,block )
 
 food=-1
 score=-2
@@ -216,3 +216,4 @@ if __name__ == "__main__":
         asyncio.run(main())
     except KeyboardInterrupt:
         print("Program stopped.")
+
