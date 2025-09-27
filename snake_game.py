@@ -114,7 +114,6 @@ async def print_loop():
         lastNode=snake_body[-1]
         x=snake_body[0][0]
         y=snake_body[0][1]
-        print(abs(operationalKey-pressedKey), file=open("test.txt", "a"))
         if isGamePaused  :
             pass
         elif (abs(operationalKey-pressedKey)==2)  :
@@ -159,7 +158,7 @@ async def print_loop():
             score+=1
         else :
             if food==snake_body[0] :
-                temp_base=base_replace(temp_base,   "\033[31m🤤\033[32m"      , food[0], food[1])
+                temp_base=base_replace(temp_base,   "\033[31m🐸\033[32m"      , food[0], food[1])
             elif food in snake_body :
                 temp_base=base_replace(temp_base,   "\033[31m❌\033[32m"      , food[0], food[1])
             else :  
@@ -216,4 +215,5 @@ if __name__ == "__main__":
         asyncio.run(main())
     except KeyboardInterrupt:
         print("Program stopped.")
+
 
