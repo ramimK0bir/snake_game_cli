@@ -46,7 +46,8 @@ A command-line implementation of the classic Snake game written in Python.
 
 ## License
 
-This project is open source and available under the MIT License.
+This project is licensed under a custom Non-Commercial License based on the MIT License. See [LICENSE](./LICENSE.txt)
+ for details.
 
 ---
 
