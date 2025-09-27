@@ -9,35 +9,52 @@ import os
 import argparse
 
 parser = argparse.ArgumentParser(description="Snake Game CLI")
-parser.add_argument('--speed', type=float, default=2, help='Speed of the snake (higher is faster)')
+parser.add_argument('--speed', type=float, default=5, help='Speed of the snake (higher is faster)')
 args = parser.parse_args()
 SPEED = 1 / args.speed if args.speed > 0 else 0.5
 
 pressedKey=-1
 operationalKey=-1
 snake_body=[(1,5)]
+for i in range(100) :
+    block=(random.randint(1, 20),random.randint(1,20))
+    if block not in snake_body :
+        snake_body.insert(0,block )
+
 food=-1
 score=-2
 
-base = """|++++++++++++++++++++|
-|++++++++++++++++++++|
-|++++++++++++++++++++|
-|++++++++++++++++++++|
-|++++++++++++++++++++|
-|++++++++++++++++++++|
-|++++++++++++++++++++|
-|++++++++++++++++++++|
-|++++++++++++++++++++|
-|++++++++++++++++++++|
+base = """|⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛|
+|⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛|
+|⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛|
+|⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛|
+|⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛|
+|⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛|
+|⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛|
+|⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛|
+|⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛|
+|⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛|
+|⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛|
+|⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛|
+|⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛|
+|⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛|
+|⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛|
+|⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛|
+|⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛|
+|⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛|
+|⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛|
+|⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛|
 """
-line="----------------------"
+
+line="------------------------------------------"
+
+
 
 def score_bar(score):
     return f"""
-----------------------
-|{ f"score :{score+1}".center(20) }|
-----------------------
-
+------------------------------------------
+|{ f"ＳＣＯＲＥ:{score+1}".center(35) }|
+------------------------------------------
 """
 
 isGamePaused=0
@@ -133,22 +150,28 @@ async def print_loop():
         temp_base=base_replace(base,"+",0,0)
         for index,item in enumerate (snake_body):
             if index == 0:
-                temp_base=base_replace(temp_base, "@", item[0], item[1])
+                temp_base=base_replace(temp_base, "🐸", item[0], item[1])
                 continue
-            temp_base=base_replace(temp_base,"=", item[0], item[1])
+            temp_base=base_replace(temp_base,"🟩", item[0], item[1])
         if food == -1 :
-            food=( random.randint(1,20),random.randint(1,10)       )
+        # if 1==1:
+            food=( random.randint(1,20),random.randint(1,20)       )
             score+=1
         else :
-            temp_base=base_replace(temp_base,   "\033[31m*\033[32m"      , food[0], food[1])
+            if food==snake_body[0] :
+                temp_base=base_replace(temp_base,   "\033[31m🤤\033[32m"      , food[0], food[1])
+            elif food in snake_body :
+                temp_base=base_replace(temp_base,   "\033[31m❌\033[32m"      , food[0], food[1])
+            else :  
+                temp_base=base_replace(temp_base,   "\033[31m🐭\033[32m"      , food[0], food[1])
 
         game_over = f"""
-----------------------
-|     Game Over      |
-|{ f"score :{score+1}".center(20) }|
-----------------------
+--------------------------------
+|       Ｇａｍｅ Ｏｖｅｒ      |
+|{ f"ＳＣＯＲＥ:{score+1}".center(25) }|
+--------------------------------
 """
-        if snake_body[0][1] >=11 or not snake_body[0][1] :
+        if snake_body[0][1] >=21 or not snake_body[0][1] :
             print("\033[H\033[J", end="")  # ANSI escape code to clear screen
             print("\033[91m" +game_over+"\033[0m\n")
             break
@@ -160,7 +183,8 @@ async def print_loop():
             print("\033[H\033[J", end="") 
             print("\033[91m" +game_over+"\033[0m\n")
             break
-        if food in snake_body:
+        if food == snake_body[0]:
+        # if 1==1 :
             snake_body.insert(-1,snake_body[-1])
             food=-1
         main_base = score_bar(score)+ line+'\n'+temp_base+line
@@ -192,4 +216,3 @@ if __name__ == "__main__":
         asyncio.run(main())
     except KeyboardInterrupt:
         print("Program stopped.")
-
